@@ -1,0 +1,507 @@
+[
+    {
+        "name": "La Nuit du Carrefour",
+        "year": "1932",
+        "country": "France",
+        "review": "Aka 'Night at the Crossroads'. Early Jean Renoir poetics. Magically delicious femme-noir and a brilliant car chase at night. Moody and bizarrre!",
+        "stars": 5
+    },
+    {
+        "name": "You Only Live Once",
+        "year": "1937",
+        "country": "US",
+        "review": "Fritz Lang and Hollywood kick-start poetic realism! Henry Fonda and Sylvia Sidney are the doomed lovers on the run.",
+        "stars": 5
+    },
+    {
+        "name": "Hotel du Nord",
+        "year": "1938",
+        "country": "France",
+        "review": "Poetic realist melodrama of lives at a downtown Paris hotel. As moody as noir with a darkly absurd resolution.",
+        "stars": 5
+    },
+    {
+        "name": "Port of Shadows",
+        "year": "1938",
+        "country": "France",
+        "review": "Aka Le Quai des brumes. Fate a dank existential fog ensnares doomed lovers Jean Gabin and Michèle Morgan after one night of happiness.",
+        "stars": 5
+    },
+    {
+        "name": "I Wake Up Screaming",
+        "year": "1941",
+        "country": "US",
+        "review": "Early crooked cop psycho-noir. Redolent noir motifs, dark shadows, off-kilter framing and expressionist imagery.",
+        "stars": 5
+    },
+    {
+        "name": "The Maltese Falcon",
+        "year": "1941",
+        "country": "US",
+        "review": "Bogart as Sam Spade the quintessential noir protagonist. A loner on the edge of polite society, sorely tempted to transgress but declines and is neither saved nor redeemed.",
+        "stars": 5
+    },
+    {
+        "name": "Ossessione",
+        "year": "1943",
+        "country": "Italy",
+        "review": "Demands and rewards multiple viewings. Visconti has taken a hard-boiled story and imbued it with intelligence, polemic, a humanist outrage, and above all, a deep compassion for the human predicament.",
+        "stars": 5
+    },
+    {
+        "name": "Journey Into Fear",
+        "year": "1943",
+        "country": "US",
+        "review": "Moody Orson Welles' noir. Exotic locales, sexy dames, weird villains, politics, wisdom, philosophy, and a wry humor.",
+        "stars": 5
+    },
+    {
+        "name": "The Seventh Victim",
+        "year": "1943",
+        "country": "US",
+        "review": "'Despair behind, and death before doth cast'. The terror of an empty existence. Brilliant Lewton gothic melodrama.",
+        "stars": 5
+    },
+    {
+        "name": "Christmas Holiday",
+        "year": "1944",
+        "country": "US",
+        "review": "Director Robert Siodmak smashes genre conventions by unleashing a wild expressionist ambience in a bizarre story of obsession and guilt that has you appalled yet enthralled. Full of bizarre surprises.",
+        "stars": 5
+    },
+    {
+        "name": "Double Indemnity",
+        "year": "1944",
+        "country": "US",
+        "review": "All the elements of the archetypal film noir  are distilled into a gothic LA tale of greed, sex, and betrayal.",
+        "stars": 5
+    },
+    {
+        "name": "Laura",
+        "year": "1944",
+        "country": "US",
+        "review": "Gene Tierney is an exquisite iridescent angel and Dana Andrews a stolid cop who nails the killer after falling for a dead dame.",
+        "stars": 5
+    },
+    {
+        "name": "Murder, My Sweet",
+        "year": "1944",
+        "country": "US",
+        "review": "(Aka Farewell, my Lovely). The most noir fun you will ever have. Raymond Chandler's prose crackles with moody noir direction from Edward Dmytryk.",
+        "stars": 5
+    },
+    {
+        "name": "Mildred Pierce",
+        "year": "1945",
+        "country": "US",
+        "review": "Joan Crawford in classy melodrama by Michael Curtiz lensed by Ernest Haller. Self-made woman escapes morass of greed.",
+        "stars": 5
+    },
+    {
+        "name": "The Lost Weekend",
+        "year": "1945",
+        "country": "US",
+        "review": "'Most men lead lives of quiet desperation. I can't take quiet desperation.' Ray Milland against type on a bender.",
+        "stars": 5
+    },
+    {
+        "name": "Ride the Pink Horse",
+        "year": "1947",
+        "country": "US",
+        "review": "Disillusioned WW2 vet arrives in a New Mexico town to blackmail a war racketeer. Imbued with a rare humanity.",
+        "stars": 5
+    },
+    {
+        "name": "Scarlet Street",
+        "year": "1945",
+        "country": "US",
+        "review": "Classic noir from Fritz Lang. Unremitting in its pessimism. A dark mood and pervading doom of devastating intensity.",
+        "stars": 5
+    },
+    {
+        "name": "The Big Sleep",
+        "year": "1946",
+        "country": "US",
+        "review": "Love's Vengeance Lost. Darker than Dmytryk's Murder, My Sweet. Bogart is tougher, more driven, and morally suspect.",
+        "stars": 5
+    },
+    {
+        "name": "The Killers",
+        "year": "1946",
+        "country": "US",
+        "review": "Siodmak's classic noir. Burt Lancaster's masterful debut performance in a tragedy of a decent man destroyed by fate.",
+        "stars": 5
+    },
+    {
+        "name": "The Postman Always Rings Twice",
+        "year": "1946",
+        "country": "US",
+        "review": "Fate ensures adulterous lovers who murder the woman's husband, suffer definite and final retribution.",
+        "stars": 5
+    },
+    {
+        "name": "Body and Soul",
+        "year": "1947",
+        "country": "US",
+        "review": "A masterwork. Melodramatic expose of the fight game and a savage indictment of money capitalism. Garfield's picture.",
+        "stars": 5
+    },
+    {
+        "name": "Brighton Rock",
+        "year": "1947",
+        "country": "UK",
+        "review": "Greatest British noir is dark and chilling. A cinematic tour-de-force: from the direction and cinematography to top cast and editing.",
+        "stars": 5
+    },
+    {
+        "name": "Nightmare Alley",
+        "year": "1947",
+        "country": "US",
+        "review": "Predatory femme-fatale uses greed not sex to trap her prey in a hell of hangmen at the bottom of an empty gin bottle.",
+        "stars": 5
+    },
+    {
+        "name": "Nora Prentiss",
+        "year": "1947",
+        "country": "US",
+        "review": "Doctor is plunged into a dark pool of noir angst in a turbo-charged melodrama of tortured loyalty and thwarted passion.",
+        "stars": 5
+    },
+    {
+        "name": "Odd Man Out",
+        "year": "1947",
+        "country": "UK",
+        "review": "Betrayal, avarice, and spirituality are all given a place in this tale of an IRA heist gone wrong. The poetry is in the dark yet glistening visuals as we follow fugitive James Mason on his path through Ulster at night and in the rain.",
+        "stars": 5
+    },
+    {
+        "name": "Out of the Past",
+        "year": "1947",
+        "country": "US",
+        "review": "Quintessential film noir. Inspired direction, exquisite expressionist cinematography, and legendary Mitchum and Greer.",
+        "stars": 5
+    },
+    {
+        "name": "The Gangster",
+        "year": "1947",
+        "country": "US",
+        "review": "Hell of a b-movie. Very dark noir 'opera' brutally critiques the 'entrepreneurial spirit'. Bravado Dalton Trumbo script.",
+        "stars": 5
+    },
+    {
+        "name": "The Lady From Shanghai",
+        "year": "1947",
+        "country": "US",
+        "review": "Orson Welles' brilliant jigsaw noir with a femme-fatale to die for and a script so sharp you relish every scene.",
+        "stars": 5
+    },
+    {
+        "name": "T-Men",
+        "year": "1947",
+        "country": "US",
+        "review": "Mann and Alton offer a visionary descent into a noir realm of dark tenements, nightclubs, mobsters, and hellish steam baths.",
+        "stars": 5
+    },
+    {
+        "name": "Act of Violence",
+        "year": "1949",
+        "country": "US",
+        "review": "Long-shot and deep focus climax filmed night-for-night on a railway platform: the stuff noirs are made of.",
+        "stars": 5
+    },
+    {
+        "name": "Drunken Angel",
+        "year": "1948",
+        "country": "Japan",
+        "review": "Aka 'Yoidore tenshi'. Kurosawa noir. A loser doctor with soul takes on the fetid moral swamp of Yakuza degradation.",
+        "stars": 5
+    },
+    {
+        "name": "Force of Evil",
+        "year": "1948",
+        "country": "US",
+        "review": "Polonsky transcends noir in a tragic allegory on greed and family. Garfield adds signature honesty and gritty complexity .",
+        "stars": 5
+    },
+    {
+        "name": "Hollow Triumph",
+        "year": "1948",
+        "country": "US",
+        "review": "Baroque journey to perdition traversing a noir topography redolent with noir archetypes. Audacious and enthralling.",
+        "stars": 5
+    },
+    {
+        "name": "Inner Sanctum",
+        "year": "1948"
+    },
+    {
+        "name": "Raw Deal",
+        "year": "1948",
+        "country": "US",
+        "review": "Sublime noir from Anthony Mann and John Alton. Knockout cast in a strong story stunningly rendered as expressionist art.",
+        "stars": 5
+    },
+    {
+        "name": "They Live by Night",
+        "year": "1948",
+        "country": "US",
+        "review": "Nicholas Ray's first feature. A tragedy of Shakespearean dimensions which transcends film noir.",
+        "stars": 5
+    },
+    {
+        "name": "Bitter Rice",
+        "year": "1949",
+        "country": "Italy",
+        "review": "Aka 'Riso Amaro'. Classic neo-realist socialist melodrama. Homme-fatale destroys a passionate innocent. A bad girl is redeemed and homme-fatale meets a gruesome noir end in an abattoir.",
+        "stars": 5
+    },
+    {
+        "name": "Border Incident",
+        "year": "1949",
+        "country": "US",
+        "review": "Subversive expressionist noir from Dir Anthony Mann DP John Alton and writer John C Higgin indicts US agribusiness.",
+        "stars": 5
+    },
+    {
+        "name": "Criss-Cross",
+        "year": "1949",
+        "country": "US",
+        "review": "Accomplished noir showcased by Siodmak's masterful aerial opening shot into parking lot onto a passing car exposing the doomed lovers to thespotlight.",
+        "stars": 5
+    },
+    {
+        "name": "Stray Dog",
+        "year": "1949",
+        "country": "Japan",
+        "review": "Aka 'Nora inu'. Kurosawa's ying and yang take on reality informs this 5-star noir: the pursuer could as easily have been the pursued.",
+        "stars": 5
+    },
+    {
+        "name": "The Reckless Moment",
+        "year": "1949",
+        "country": "US",
+        "review": "Max Ophuls takes a blackmail story and infuses it with a complexity and subtlety rarely matched in film noir.",
+        "stars": 5
+    },
+    {
+        "name": "The Set-Up",
+        "year": "1949",
+        "country": "US",
+        "review": "Robert Ryan is great as washed-up boxer in Robert Wise' sharp expose of the fight game. Brooding and intense noir classic.",
+        "stars": 5
+    },
+    {
+        "name": "The Third Man",
+        "year": "1949",
+        "country": "UK",
+        "review": "Sublime. An engaging cavalcade of characters in a human comedy of love, friendship, and the imperatives of conscience.",
+        "stars": 5
+    },
+    {
+        "name": "Thieves' Highway",
+        "year": "1949",
+        "country": "US",
+        "review": "Moody Richard Conte hauling fruit to Frisco. Rich socio-realist melodrama from Jules Dassin and A.I. Bezzerides. AAA.",
+        "stars": 5
+    },
+    {
+        "name": "Too Late For Tears",
+        "year": "1949",
+        "country": "US",
+        "review": "Preposterous chance event launches wild descent into dark avarice and eroticised violence as relentless as fate.",
+        "stars": 5
+    },
+    {
+        "name": "Une Si Jolie Petite Plage",
+        "year": "1949",
+        "country": "France",
+        "review": "Aka 'Riptide'. Iron in the soul: savage irony, withering subversion, and desolation mark the rain-sodden angst of a young man's end.",
+        "stars": 5
+    },
+    {
+        "name": "White Heat",
+        "year": "1949",
+        "country": "US",
+        "review": "Fission Noir. Taut electric thriller straps you in an emotional strait-jacket released only in the final explosive frames.",
+        "stars": 5
+    },
+    {
+        "name": "Breaking Point",
+        "year": "1950",
+        "country": "US",
+        "review": "Great John Garfield vehicle with strong social subtext. Much stronger than from the same source To Have and Have Not.",
+        "stars": 5
+    },
+    {
+        "name": "Caged",
+        "year": "1950",
+        "country": "US",
+        "review": "Eleanor Parker leads a great female cast in a dark women's prison picture with a savage climax and a gutsy downbeat ending.",
+        "stars": 5
+    },
+    {
+        "name": "D.O.A.",
+        "year": "1950",
+        "country": "US",
+        "review": "Gritty on-the-street in-your-face melodrama of innocent act a decent man's un-doing. Edmund O'Brien is intense. The goons rock!",
+        "stars": 5
+    },
+    {
+        "name": "In A Lonely Place",
+        "year": "1950",
+        "country": "US",
+        "review": "Nick Ray deftly explores effect of isolation, frustration, and anxiety on the creative psyche as noir entrapment.",
+        "stars": 5
+    },
+    {
+        "name": "Night And the City",
+        "year": "1950",
+        "country": "US/UK",
+        "review": "Dassin's stark existential journey played out in the dark dives of post-war London as a quintessential noir city.",
+        "stars": 5
+    },
+    {
+        "name": "Sunset Boulevard",
+        "year": "1950",
+        "country": "US",
+        "review": "Wilder's sympathetic story of four decent people each sadly complicit in the inevitable doom that will engulf them.",
+        "stars": 5
+    },
+    {
+        "name": "The Asphalt Jungle",
+        "year": "1950",
+        "country": "US",
+        "review": "Quintessential heist movie transcends melodrama and noir. A police siren wails: 'Sounds like a soul in hell.'",
+        "stars": 5
+    },
+    {
+        "name": "The Sound of Fury",
+        "year": "1950",
+        "country": "US",
+        "review": "Great noir! Outdoes Lang's Fury and brilliantly prefigures Wilder's Ace in the Hole. Climactic mob scenes mesmerise.",
+        "stars": 5
+    },
+    {
+        "name": "On Dangerous Ground",
+        "year": "1951",
+        "country": "US",
+        "review": "City cop battling inner demons is sent to 'Siberia'. A film of dark beauty and haunting characterisations.",
+        "stars": 5
+    },
+    {
+        "name": "The Prowler",
+        "year": "1951",
+        "country": "US",
+        "review": "Van Heflin is homme-fatale in Trumbo thriller. Director Losey is unforgiving. Each squalid act is suffocatingly framed.",
+        "stars": 5
+    },
+    {
+        "name": "Ace in the Hole",
+        "year": "1952",
+        "country": "US",
+        "review": "A savage critique of a corrupted and corrupting modern mass media. Billy Wilder's best movie. Kirk Douglas owns it.",
+        "stars": 5
+    },
+    {
+        "name": "Clash By Night",
+        "year": "1952",
+        "country": "US",
+        "review": "Cheating wife Stanwyck faces the music. Fritz Lang puts sexual license and existential entitlement on trial and wins.",
+        "stars": 5
+    },
+    {
+        "name": "The Big Heat",
+        "year": "1953",
+        "country": "US",
+        "review": "Gloria Grahame as existential hero in Fritz Lang's brooding socio-realist noir critique.",
+        "stars": 5
+    },
+    {
+        "name": "Crime Wave",
+        "year": "1954",
+        "country": "US",
+        "review": "Andre de Toth noir masterwork set on the streets of LA is so authentic it plays for real with each character deeply drawn.",
+        "stars": 5
+    },
+    {
+        "name": "Suddenly",
+        "year": "1954"
+    },
+    {
+        "name": "Kiss Me Deadly",
+        "year": "1955",
+        "country": "US",
+        "review": "Anti-fascist Hollywood Dada. Aldrich's surreal noir a totally weird yet compelling exploration of urban paranoia.",
+        "stars": 5
+    },
+    {
+        "name": "Rififi",
+        "year": "1955",
+        "country": "France",
+        "review": "Dassin's classic heist thriller culminating in the terrific final scenes of a car desperately careening through Paris streets.",
+        "stars": 5
+    },
+    {
+        "name": "The Big Combo",
+        "year": "1955",
+        "country": "US",
+        "review": "'I live in a maze... a strange blind backward maze'. Obsessed cop hunts down a psychotic crime boss in the best noir of 50s.",
+        "stars": 5
+    },
+    {
+        "name": "Sweet Smell of Success",
+        "year": "1957",
+        "country": "US",
+        "review": "DP James Wong Howe's sharpest picture. As bracing as vinegar and cold as ice. Ambition stripped of all pretense.",
+        "stars": 5
+    },
+    {
+        "name": "Touch of Evil",
+        "year": "1958",
+        "country": "US",
+        "review": "Welles' masterwork is a disconnected emotionally remote study of moral dissipation. Crisp b&w lensing by Russell Metty.",
+        "stars": 5
+    },
+    {
+        "name": "Odds Against Tomorrow",
+        "year": "1959",
+        "country": "US",
+        "review": "A work of art from Rober Wise. New York City and its industrial fringe are quasi-protagonists that harbor the angst and desperation of life outside the mainstream -- sordid dreams of the last big heist that will fix everything.",
+        "stars": 5
+    },
+    {
+        "name": "Underworld USA",
+        "year": "1961",
+        "country": "US",
+        "review": "Fast and furious pulp from Sam Fuller. Revenge finds redemption in death up a back alley the genesis of dark vengeance.",
+        "stars": 5
+    },
+    {
+        "name": "Requiem For A Heavyweight",
+        "year": "1962",
+        "country": "US",
+        "review": "Rod Serling's screenplay is lucid and economical. A washed-up boxer scenario in just under 82 minutes builds a closely realised character study, supported by a cast that delivers soulfully and with a leanness that is rarely matched.",
+        "stars": 5
+    },
+    {
+        "name": "The Pawnbroker",
+        "year": "1964",
+        "country": "US",
+        "review": "The screenplay weaves the past and the present by juxtaposition and is economic when words are needed. Rod Steiger's portrayal of Nazi death-camp survivor is a tour-de-force and his nominations for an Oscar and other accolades richly deserved.",
+        "stars": 5
+    },
+    {
+        "name": "A Colt is My Passport",
+        "year": "1967",
+        "country": "Japan",
+        "review": "Aka 'Koruto wa ore no pasupoto'. Hip acid Nikkatsu noir with surreal spaghetti-western score.",
+        "stars": 5
+    },
+    {
+        "name": "Klute",
+        "year": "1971",
+        "country": "US",
+        "review": "Alan J. Pakula's signature reworking of classic noir motifs in a masterly study of urban paranoia and alienation. Jane Fonda earned an Oscar for her brilliant portrayal of articulate b-girl the target of mystery psychopath.",
+        "stars": 5
+    }
+]
