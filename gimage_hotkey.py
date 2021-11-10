@@ -2,7 +2,7 @@ import time, os, pyperclip, helpers, wget, random, pytesseract
 from ahk import AHK
 from requests import HTTPError
 from urllib.error import URLError
-from PIL import Image, ImageGrab
+from PIL import ImageGrab
 
 ahk = AHK()
 image_types = {'main': "\"poster\"", 'scene': "\"scene\" -youtube -poster"}
@@ -17,7 +17,14 @@ def get_filename(img_url, dir_name):
         pass
 
 
-class Record:
+def get_clipimg():
+    try:
+        return ImageGrab.grabclipboard()
+    except OSError:
+        pass
+
+
+class FilmRecord:
     def __init__(self, title=None, year=None, query=None) -> None:
         if query:
             year_re = helpers.get_year_re(query[-4:])
@@ -26,36 +33,52 @@ class Record:
                 title = query[:-4].strip()
         self.title = title
         self.year = year
+        self.images = []
 
 
     def get_query(self, image_type) -> str:
         return f"{self.title} {self.year} film {image_types[image_type]}"
+
+
+class ImageRecord:
+    def __init__(self, imgtype, url, imgpath, text, conf) -> None:
+        self.imgtype = imgtype
+        self.url = url
+        self.imgpath = imgpath
+        self.text = text
+        self.conf = conf
     
 
-    def set_image(self, image_type, image_url):
-        setattr(self, image_type, image_url)
+    def check_sums(self):
+        sum_text = sum(1 for t in self.text if t)
+        sum_conf = sum(1 for c in self.conf if float(c) > 95)
+        return sum_text > 0 and sum_conf > 0
 
 
 class Collector:
     def __init__(self, queries=None, queries_range=None, rand=False):
-        self.records = []
+        self.films = []
         if queries:
             for i in range(queries_range or len(queries)):
-                self.records.append(Record(query=queries[i]))
+                self.films.append(FilmRecord(query=queries[i]))
         else:
             file_path = os.path.join(helpers.gihk_dir, 'films_artblog.json')
-            file_records = helpers.read_json_file(file_path)
-            for i in range(queries_range or len(file_records)):
+            file_films = helpers.read_json_file(file_path)
+            indices_used = []
+            for i in range(queries_range or len(file_films)):
                 if rand:
-                    file_record = random.choice(file_records)
+                    file_film_idx = random.choice(range(len(file_films)))
+                    while file_film_idx in indices_used:
+                        file_film_idx = random.choice(range(len(file_films)))
+                    indices_used.append(file_film_idx)
                 else:
-                    file_record = file_records[i]
-                self.records.append(Record(title=file_record['name'], year=file_record['year']))
+                    file_film_idx = i
+                self.films.append(FilmRecord(title=file_films[file_film_idx]['name'], year=file_films[file_film_idx]['year']))
 
 
-    def find_image_urls(self, alt_map=None):
-        for x, record in enumerate(self.records):
-            output_dirname = record.title.replace(' ', '_')
+    def save_images(self, alt_map=None):
+        for x, film in enumerate(self.films):
+            output_dirname = film.title.replace(' ', '_')
             output_dir = os.path.join(images_dir, output_dirname)
             if not os.path.exists(output_dir):
                 os.mkdir(output_dir)
@@ -76,7 +99,7 @@ class Collector:
                     alt_first = None
                 first_img = alt_first or 1
 
-                ahk.type(record.get_query(it))
+                ahk.type(film.get_query(it))
                 ahk.key_press('Enter')
                 time.sleep(3)
                 ahk.mouse_move(0, 0, relative=False)
@@ -87,7 +110,7 @@ class Collector:
                 time.sleep(0.5)
                 ahk.key_press('Enter')
                 time.sleep(1)
-
+                saved_images_counter = 0
                 while True:
                     ahk.key_press('AppsKey')
                     time.sleep(1)
@@ -95,122 +118,35 @@ class Collector:
                         ahk.key_press('Up')
                     ahk.key_press('Enter')
                     time.sleep(0.5)
-                    image_url = pyperclip.paste()
-                    if not image_url.startswith('data'):
-                        if any(bad_source in image_url for bad_source in bad_sources):
-                            ahk.key_press('Right')
-                        else:
-                            filename = get_filename(image_url, output_dirname)
+                    imgurl = pyperclip.paste()
+                    print(film.title, imgurl)
+                    if not imgurl.startswith('data'):
+                        if not any(bad_source in imgurl for bad_source in bad_sources):
+                            filename = get_filename(imgurl, output_dirname)
                             if filename:
-                                if it == 'scene':
-                                    ahk.key_press('AppsKey')
-                                    time.sleep(1)
-                                    for k in range(5):
-                                        ahk.key_press('Up')
-                                    ahk.key_press('Enter')
-                                    time.sleep(0.5)
-                                    data = pytesseract.image_to_data(ImageGrab.grabclipboard(), output_type=pytesseract.Output.DICT)
-                                    print(f'\nbegin {record.title} imgtxt:\n{data["text"]}\n{data["conf"]}\nend {record.title} imgtxt\n')
-                                os.rename(filename, os.path.join(output_dir, f'{it}.jpg'))
-                                break
-                            else:
-                                ahk.key_press('Right')
-                    time.sleep(0.5)
-                print(image_url)
-                record.set_image(it, image_url)
-                win.kill()
-                time.sleep(0.5)
-                pyperclip.copy('')
-
-
-    def img_switch_experiment(self, alt_map=None):
-        for x, record in enumerate(self.records):
-            for j, it in enumerate([*image_types]):
-                ahk.run_script('Run Chrome')
-                time.sleep(0.5)
-                win = ahk.find_window(title=b'New Tab')
-                win.activate()
-                win.maximize()
-                time.sleep(0.5)
-                ahk.type("https://images.google.com/")
-                ahk.key_press('Enter')
-                time.sleep(1)
-
-                if alt_map:
-                    alt_first = alt_map.get(f'{x},{j}')
-                else:
-                    alt_first = None
-                first_img = alt_first or 1
-
-                ahk.type(record.get_query(it))
-                ahk.key_press('Enter')
-                time.sleep(2)
-                for h in range(first_img):
-                    ahk.mouse_move(0, 0, relative=False)
-                    ahk.key_press('Right')
-                    time.sleep(2)
-                ahk.key_press('Enter')
-                time.sleep(1)
-                win.kill()
-    
-
-    def tesseract_experiment(self):
-        for record in self.records:
-            output_dirname = record.title.replace(' ', '_')
-            output_dir = os.path.join(images_dir, output_dirname)
-            if not os.path.exists(output_dir):
-                os.mkdir(output_dir)
-            for it in [*image_types]:
-                ahk.run_script('Run Chrome')
-                time.sleep(0.5)
-                win = ahk.find_window(title=b'New Tab')
-                win.activate()
-                win.maximize()
-                time.sleep(0.5)
-                ahk.type("https://images.google.com/")
-                ahk.key_press('Enter')
-                time.sleep(1)
-
-                ahk.type(record.get_query(it))
-                ahk.key_press('Enter')
-                time.sleep(3)
-                ahk.mouse_move(0, 0, relative=False)
-                time.sleep(0.5)
-                ahk.key_press('Right')
-                time.sleep(1)
-                ahk.key_press('Enter')
-                time.sleep(1)
-
-                while True:
-                    ahk.key_press('AppsKey')
-                    time.sleep(1)
-                    for i in range(4):
-                        ahk.key_press('Up')
-                    ahk.key_press('Enter')
-                    time.sleep(0.5)
-                    image_url = pyperclip.paste()
-                    if not image_url.startswith('data'):
-                        if any(bad_source in image_url for bad_source in bad_sources):
-                            ahk.key_press('Right')
-                        else:
-                            filename = get_filename(image_url, output_dirname)
-                            if filename:
-                                if it == 'scene':
-                                    ahk.key_press('AppsKey')
-                                    time.sleep(1)
-                                    for k in range(5):
-                                        ahk.key_press('Up')
-                                    ahk.key_press('Enter')
-                                    time.sleep(0.5)
-                                    data = pytesseract.image_to_data(ImageGrab.grabclipboard(), output_type=pytesseract.Output.DICT)
-                                    print(f'\nbegin {record.title} imgtxt:\n{data}\nend {record.title} imgtxt\n')
-                                os.rename(filename, os.path.join(output_dir, f'{it}.jpg'))
-                                break
-                            else:
-                                ahk.key_press('Right')
-                    time.sleep(0.5)
-                print(image_url)
-                record.set_image(it, image_url)
+                                saved_images_counter += 1
+                                imgpath = os.path.join(output_dir, f'{it + str(saved_images_counter)}.jpg')
+                                ahk.key_press('AppsKey')
+                                time.sleep(1)
+                                for k in range(5):
+                                    ahk.key_press('Up')
+                                ahk.key_press('Enter')
+                                clipimg = None
+                                clipimg_tries = 0
+                                while not clipimg and clipimg_tries < 5:
+                                    clipimg_tries += 1
+                                    time.sleep(clipimg_tries)
+                                    clipimg = get_clipimg()
+                                imgdata = {}
+                                if clipimg:
+                                    imgdata.update(pytesseract.image_to_data(clipimg, output_type=pytesseract.Output.DICT))
+                                image = ImageRecord(it, imgurl, imgpath, imgdata.get('text'), imgdata.get('conf'))
+                                film.images.append(image)
+                                os.replace(filename, imgpath)
+                                if not (it == 'scene' and image.check_sums()):
+                                    break
+                        ahk.key_press('Right')
+                    time.sleep(0.5)  # For some reason, if you keep copying the image address, eventually it gives you the unmasked version that doesn't start with 'data'.
                 win.kill()
                 time.sleep(0.5)
                 pyperclip.copy('')
@@ -218,11 +154,11 @@ class Collector:
 
     def save_collection(self):
         file_path = os.path.join(helpers.gihk_dir, 'collection.json')
-        helpers.write_json_file(file_path, self.records)
+        helpers.write_json_file(file_path, self.films)
 
 
-test_queries = ["I wake up screaming 1941", "Christmas Holiday 1944"]
+test_queries = ["T-Men 1947"]
 test_collector = Collector(queries_range=7, rand=True)
 test_alt_map = {'0,1': 2}
-test_collector.find_image_urls()
+test_collector.save_images()
 test_collector.save_collection()
