@@ -24,6 +24,48 @@ def get_clipimg():
         pass
 
 
+def rightclick_menu(ups):
+    ahk.key_press('AppsKey')
+    time.sleep(1)
+    for _ in range(ups):
+        ahk.key_press('Up')
+        time.sleep(0.2)
+    ahk.key_press('Enter')
+    time.sleep(0.5)
+
+
+def load_chrome_get_win():
+    ahk.run_script('Run Chrome')
+    time.sleep(0.5)
+    win = ahk.find_window(title=b'New Tab')
+    win.activate()
+    win.maximize()
+    time.sleep(0.5)
+    ahk.type("https://images.google.com/")
+    ahk.key_press('Enter')
+    time.sleep(1.5)
+    win.activate()
+    time.sleep(0.5)
+    return win
+
+
+def submit_query(query):
+    ahk.type(query)
+    ahk.key_press('Enter')
+    time.sleep(3)
+    ahk.mouse_move(0, 0, relative=False)
+    time.sleep(0.5)
+
+
+def select_first_img(img_pos):
+    for _ in range(img_pos):
+        ahk.key_press('Right')
+        time.sleep(0.5)
+    time.sleep(0.5)
+    ahk.key_press('Enter')
+    time.sleep(1)
+
+
 class FilmRecord:
     def __init__(self, title=None, year=None, query=None) -> None:
         if query:
@@ -50,14 +92,16 @@ class ImageRecord:
     
 
     def check_sums(self):
-        sum_text = sum(1 for t in self.text if t)
-        sum_conf = sum(1 for c in self.conf if float(c) > 95)
-        return sum_text > 0 and sum_conf > 0
+        if self.text and self.conf:
+            sum_text = sum(1 for t in self.text if t)
+            sum_conf = sum(1 for c in self.conf if float(c) > 95)
+            return sum_text > 0 and sum_conf > 0
 
 
 class Collector:
-    def __init__(self, queries=None, queries_range=None, rand=False):
+    def __init__(self, queries=None, queries_range=None, rand=False, alt_map=None):
         self.films = []
+        self.alt_map = alt_map
         if queries:
             for i in range(queries_range or len(queries)):
                 self.films.append(FilmRecord(query=queries[i]))
@@ -76,6 +120,14 @@ class Collector:
                 self.films.append(FilmRecord(title=file_films[file_film_idx]['name'], year=file_films[file_film_idx]['year']))
 
 
+    def get_first_img(self, x, j):
+        if self.alt_map:
+            alt_first = self.alt_map.get(f'{x},{j}')
+        else:
+            alt_first = None
+        return alt_first or 1
+
+
     def save_images(self, alt_map=None):
         for x, film in enumerate(self.films):
             output_dirname = film.title.replace(' ', '_')
@@ -83,58 +135,32 @@ class Collector:
             if not os.path.exists(output_dir):
                 os.mkdir(output_dir)
             for j, it in enumerate([*image_types]):
-                ahk.run_script('Run Chrome')
-                time.sleep(0.5)
-                win = ahk.find_window(title=b'New Tab')
-                win.activate()
-                win.maximize()
-                time.sleep(0.5)
-                ahk.type("https://images.google.com/")
-                ahk.key_press('Enter')
-                time.sleep(1)
-
-                if alt_map:
-                    alt_first = alt_map.get(f'{x},{j}')
-                else:
-                    alt_first = None
-                first_img = alt_first or 1
-
-                ahk.type(film.get_query(it))
-                ahk.key_press('Enter')
-                time.sleep(3)
-                ahk.mouse_move(0, 0, relative=False)
-                time.sleep(0.5)
-                for h in range(first_img):
-                    ahk.key_press('Right')
-                    time.sleep(0.5)
-                time.sleep(0.5)
-                ahk.key_press('Enter')
-                time.sleep(1)
-                saved_images_counter = 0
+                first_img = self.get_first_img(x, j)
+                win = load_chrome_get_win()
+                submit_query(film.get_query(it))
+                select_first_img(first_img)
+                saved_images_counter = textless_scene_fails = gf_fails = bs_fails = 0
                 while True:
-                    ahk.key_press('AppsKey')
-                    time.sleep(1)
-                    for i in range(4):
-                        ahk.key_press('Up')
-                    ahk.key_press('Enter')
-                    time.sleep(0.5)
+                    rightclick_menu(4)  # Copy img url
                     imgurl = pyperclip.paste()
-                    print(film.title, imgurl)
                     if not imgurl.startswith('data'):
+                        print(film.title, imgurl)
                         if not any(bad_source in imgurl for bad_source in bad_sources):
-                            filename = get_filename(imgurl, output_dirname)
+                            filename = get_filename(imgurl, output_dirname)  # Attempt to download image
+                            if not filename:
+                                gf_fails += 1
+                                rightclick_menu(7)  # For some reason, opening the image in a new tab after the image download fails sometimes stops 403 errors occurring
+                                time.sleep(1)
+                                filename = get_filename(imgurl, output_dirname)  # Try one more time
                             if filename:
                                 saved_images_counter += 1
                                 imgpath = os.path.join(output_dir, f'{it + str(saved_images_counter)}.jpg')
-                                ahk.key_press('AppsKey')
-                                time.sleep(1)
-                                for k in range(5):
-                                    ahk.key_press('Up')
-                                ahk.key_press('Enter')
+                                rightclick_menu(5)  # Copy img
                                 clipimg = None
                                 clipimg_tries = 0
                                 while not clipimg and clipimg_tries < 5:
                                     clipimg_tries += 1
+                                    print(f'waiting {clipimg_tries} seconds before trying to access copied {it} image for {film.title}')
                                     time.sleep(clipimg_tries)
                                     clipimg = get_clipimg()
                                 imgdata = {}
@@ -145,7 +171,18 @@ class Collector:
                                 os.replace(filename, imgpath)
                                 if not (it == 'scene' and image.check_sums()):
                                     break
+                                else:
+                                    textless_scene_fails += 1
+                                    print(film.title, f'textless scene fails: {textless_scene_fails}')
+                            else:
+                                gf_fails += 1
+                                print(film.title, it, f'get_filename fails: {gf_fails}')
+                        else:
+                            bs_fails += 1
+                            print(film.title, it, f'bad source fails: {bs_fails}')
                         ahk.key_press('Right')
+                    else:
+                        print(film.title, 'data:image')
                     time.sleep(0.5)  # For some reason, if you keep copying the image address, eventually it gives you the unmasked version that doesn't start with 'data'.
                 win.kill()
                 time.sleep(0.5)
@@ -157,8 +194,8 @@ class Collector:
         helpers.write_json_file(file_path, self.films)
 
 
-test_queries = ["T-Men 1947"]
-test_collector = Collector(queries_range=7, rand=True)
+test_queries = ["Rififi 1955"]
+test_collector = Collector(queries_range=5, rand=True)
 test_alt_map = {'0,1': 2}
 test_collector.save_images()
 test_collector.save_collection()
