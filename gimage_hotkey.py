@@ -83,13 +83,21 @@ class FilmRecord:
 
 
 class ImageRecord:
-    def __init__(self, imgtype, url, imgpath, text, conf) -> None:
+    def __init__(self, width=None, height=None, imgtype=None, url=None, imgpath=None, text=None, conf=None) -> None:
+        self.width = width
+        self.height = height
         self.imgtype = imgtype
         self.url = url
         self.imgpath = imgpath
         self.text = text
         self.conf = conf
     
+
+    def check_size(self):
+        if self.width and self.height:
+            a = self.width * self.height
+            return a < 100000
+
 
     def check_sums(self):
         if self.text and self.conf:
@@ -99,25 +107,28 @@ class ImageRecord:
 
 
 class Collector:
-    def __init__(self, queries=None, queries_range=None, rand=False, alt_map=None):
+    def __init__(self, queries=None, queries_range=0, rand=False, alt_map=None):
         self.films = []
         self.alt_map = alt_map
+        self.qr = queries_range or 0  # In case None is passed in
         if queries:
-            for i in range(queries_range or len(queries)):
+            self.update_qr(len(queries))
+            for i in range(self.qr):
                 self.films.append(FilmRecord(query=queries[i]))
         else:
             file_path = os.path.join(helpers.gihk_dir, 'films_artblog.json')
             file_films = helpers.read_json_file(file_path)
-            indices_used = []
-            for i in range(queries_range or len(file_films)):
-                if rand:
-                    file_film_idx = random.choice(range(len(file_films)))
-                    while file_film_idx in indices_used:
-                        file_film_idx = random.choice(range(len(file_films)))
-                    indices_used.append(file_film_idx)
-                else:
-                    file_film_idx = i
-                self.films.append(FilmRecord(title=file_films[file_film_idx]['name'], year=file_films[file_film_idx]['year']))
+            self.update_qr(len(file_films))
+            indices = [i for i in range(self.qr)]
+            if rand:
+                random.shuffle(indices)
+            for j in indices:
+                self.films.append(FilmRecord(title=file_films[j]['name'], year=file_films[j]['year']))
+
+
+    def update_qr(self, max_qr):
+        if not self.qr or self.qr > max_qr:
+            self.qr = max_qr
 
 
     def get_first_img(self, x, j):
@@ -128,7 +139,7 @@ class Collector:
         return alt_first or 1
 
 
-    def save_images(self, alt_map=None):
+    def save_images(self):
         for x, film in enumerate(self.films):
             output_dirname = film.title.replace(' ', '_')
             output_dir = os.path.join(images_dir, output_dirname)
@@ -139,7 +150,7 @@ class Collector:
                 win = load_chrome_get_win()
                 submit_query(film.get_query(it))
                 select_first_img(first_img)
-                saved_images_counter = textless_scene_fails = gf_fails = bs_fails = 0
+                saved_images_counter = small_images = text_scenes = gf_fails = bs_fails = 0
                 while True:
                     rightclick_menu(4)  # Copy img url
                     imgurl = pyperclip.paste()
@@ -154,7 +165,6 @@ class Collector:
                                 filename = get_filename(imgurl, output_dirname)  # Try one more time
                             if filename:
                                 saved_images_counter += 1
-                                imgpath = os.path.join(output_dir, f'{it + str(saved_images_counter)}.jpg')
                                 rightclick_menu(5)  # Copy img
                                 clipimg = None
                                 clipimg_tries = 0
@@ -165,15 +175,29 @@ class Collector:
                                     clipimg = get_clipimg()
                                 imgdata = {}
                                 if clipimg:
+                                    width, height = clipimg.size
+                                    imgdata.update(w=width, h=height)
                                     imgdata.update(pytesseract.image_to_data(clipimg, output_type=pytesseract.Output.DICT))
-                                image = ImageRecord(it, imgurl, imgpath, imgdata.get('text'), imgdata.get('conf'))
+                                image = ImageRecord(width=imgdata.get('w'), height=imgdata.get('h'), imgtype=it, url=imgurl, text=imgdata.get('text'), conf=imgdata.get('conf'))
+                                new_filename = it + str(saved_images_counter)
+                                if image.check_size():
+                                    new_filename += '_small'
+                                if image.check_sums():
+                                    new_filename += '_text'
+                                new_filename += '.jpg'
+                                imgpath = os.path.join(output_dir, new_filename)
+                                image.imgpath = imgpath
                                 film.images.append(image)
                                 os.replace(filename, imgpath)
-                                if not (it == 'scene' and image.check_sums()):
+                                if not (it == 'scene' and image.check_sums()) and not image.check_size():
                                     break
                                 else:
-                                    textless_scene_fails += 1
-                                    print(film.title, f'textless scene fails: {textless_scene_fails}')
+                                    if not image.check_size():
+                                        small_images += 1
+                                        print(film.title, it, f'small images: {small_images}')
+                                    if not (it == 'scene' and image.check_sums()):
+                                        text_scenes += 1
+                                        print(film.title, f'text scenes: {text_scenes}')
                             else:
                                 gf_fails += 1
                                 print(film.title, it, f'get_filename fails: {gf_fails}')
@@ -195,7 +219,7 @@ class Collector:
 
 
 test_queries = ["Rififi 1955"]
-test_collector = Collector(queries_range=5, rand=True)
-test_alt_map = {'0,1': 2}
+test_alt_map = {'0,1': 2}  # To skip La Nuit du Carrefour's nsfw first scene img
+test_collector = Collector(queries_range=2, rand=True)
 test_collector.save_images()
 test_collector.save_collection()
