@@ -1,27 +1,10 @@
-import time, os, pyperclip, helpers, wget, random, pytesseract
+import time, os, pyperclip, helpers, random, pytesseract
 from ahk import AHK
-from requests import HTTPError
-from urllib.error import URLError
-from PIL import ImageGrab
 
 ahk = AHK()
 image_types = {'main': "\"poster\"", 'scene': "\"scene\" -youtube -poster"}
 bad_sources = ['shutterstock', 'alamy', 'agefotostock', 'gettyimages', 'granger']
 images_dir = os.path.join(helpers.gihk_dir, 'images')
-
-
-def get_filename(img_url, dir_name):
-    try:
-        return wget.download(img_url, out=f'images\\{dir_name}\\')
-    except (HTTPError, URLError) as _:
-        pass
-
-
-def get_clipimg():
-    try:
-        return ImageGrab.grabclipboard()
-    except OSError:
-        pass
 
 
 def rightclick_menu(ups):
@@ -79,7 +62,7 @@ class FilmRecord:
     
 
     def set_ty_from_file(self, data: dict):
-        self.title = data.get('title')
+        self.title = data.get('name')
         self.year = data.get('year')
 
 
@@ -112,11 +95,12 @@ class ImageRecord:
 
 
 class Collector:
-    def __init__(self, queries=None, queries_range=0, rand=False, alt_map=None):
+    def __init__(self, **kwargs):
         self.films = []
-        self.alt_map = alt_map
-        self.qr = queries_range or 0  # In case None is passed in
-        self.rand = rand
+        self.alt_map = kwargs.get('alt_map')
+        self.qr = kwargs.get('queries_range') or 0
+        self.rand = kwargs.get('rand')
+        queries = kwargs.get('queries')
         if queries:
             self.populate_films(queries, 'set_ty_from_query')
         else:
@@ -137,22 +121,22 @@ class Collector:
             self.films.append(fr)
 
 
-    def get_first_img(self, x, j):
+    def get_first_img(self, ft, it):
         if self.alt_map:
-            alt_first = self.alt_map.get(f'{x},{j}')
+            alt_first = self.alt_map.get((ft, it))
         else:
             alt_first = None
         return alt_first or 1
 
 
     def save_images(self):
-        for x, film in enumerate(self.films):
+        for film in self.films:
             output_dirname = film.title.replace(' ', '_')
             output_dir = os.path.join(images_dir, output_dirname)
             if not os.path.exists(output_dir):
                 os.mkdir(output_dir)
-            for j, it in enumerate([*image_types]):
-                first_img = self.get_first_img(x, j)
+            for it in image_types:
+                first_img = self.get_first_img(film.title.lower(), it)
                 win = load_chrome_get_win()
                 submit_query(film.get_query(it))
                 select_first_img(first_img)
@@ -163,12 +147,12 @@ class Collector:
                     if not imgurl.startswith('data'):
                         print(film.title, imgurl)
                         if not any(bad_source in imgurl for bad_source in bad_sources):
-                            filename = get_filename(imgurl, output_dirname)  # Attempt to download image
+                            filename = helpers.get_filename(imgurl, output_dirname)  # Attempt to download image
                             if not filename:
                                 gf_fails += 1
                                 rightclick_menu(7)  # For some reason, opening the image in a new tab after the image download fails sometimes stops 403 errors occurring
                                 time.sleep(1)
-                                filename = get_filename(imgurl, output_dirname)  # Try one more time
+                                filename = helpers.get_filename(imgurl, output_dirname)  # Try one more time
                             if filename:
                                 saved_images_counter += 1
                                 rightclick_menu(5)  # Copy img
@@ -178,7 +162,7 @@ class Collector:
                                     clipimg_tries += 1
                                     print(f'waiting {clipimg_tries} seconds before trying to access copied {it} image for {film.title}')
                                     time.sleep(clipimg_tries)
-                                    clipimg = get_clipimg()
+                                    clipimg = helpers.get_clipimg()
                                 imgdata = {}
                                 if clipimg:
                                     width, height = clipimg.size
@@ -222,10 +206,3 @@ class Collector:
     def save_collection(self):
         file_path = os.path.join(helpers.gihk_dir, 'collection.json')
         helpers.write_json_file(file_path, self.films)
-
-
-test_queries = ["Rififi 1955"]
-test_alt_map = {'0,1': 2}  # To skip La Nuit du Carrefour's nsfw first scene img
-test_collector = Collector(queries_range=5, rand=True)
-test_collector.save_images()
-test_collector.save_collection()
